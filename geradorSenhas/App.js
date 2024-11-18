@@ -1,13 +1,25 @@
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, Modal } from 'react-native';
-import { useState } from 'react';
+
+// *** NOVO: Importações para Navegação ***
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+// *** Fim das Novas Importações para Navegação ***
+
+import SavedPasswords from './src/screens/SavedPasswords'; // *** NOVO: Tela de Senhas Salvas ***
 import { ModalPassword } from './src/components/modal';
 
  
 let charset = "abcdefghijklmnopqrstuvwxyz!#$&%0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+const Stack = createStackNavigator();
+
+function HomeScreen({ navigation }) {
+  const  [senhaGerada, setSenhaGerada] = useState("");
+  const  [modalVisible, setModalVisible] = useState(false);
+  const  [savedPasswords, setSavedPasswords] = useState([]);
+
  
-export default function App() {
-  const [senhaGerada, setSenhaGerada] = useState("")
-  const [modalVisible, setModalVisible] = useState(false)
  
   function gerarSenha() {
     let senha = "";
@@ -19,6 +31,15 @@ export default function App() {
     setModalVisible(true)
  
   }
+
+  function salvarSenha() {
+    setSavedPasswords(prevPasswords => {
+    const updatedPasswords = [...prevPasswords, senhaGerada];
+    setModalVisible(false); 
+    navigation.navigate('SavedPasswords', {savedPasswords: updatedPasswords});
+    return updatedPasswords; 
+    });
+}
  
   return (
     <View style={styles.container}>
@@ -31,9 +52,20 @@ export default function App() {
         <Text style={styles.textButton}>Gerar Senha</Text>
       </TouchableOpacity>
       <Modal visible={modalVisible} animationType='fade' transparent={true}>
-        <ModalPassword senha={senhaGerada} fecharModal={() => setModalVisible(false)}/>
+        <ModalPassword senha={senhaGerada} fecharModal={() => setModalVisible(false)} salvarSenha={salvarSenha}/>
       </Modal>
     </View>
+  );
+}
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen}/>
+        <Stack.Screen name="Details" component={DetailsScreen}/>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
  
