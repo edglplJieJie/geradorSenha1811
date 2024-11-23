@@ -6,7 +6,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 // *** Fim das Novas Importações para Navegação ***
 
-import SavedPasswords from './src/screens/SavedPasswords'; // *** NOVO: Tela de Senhas Salvas ***
+import Sobre from './src/screens/Sobre';
+import SavedPasswords from './src/screens/SavedPasswords'; 
 import { ModalPassword } from './src/components/modal';
 
  
@@ -44,13 +45,19 @@ function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Image
-        source={require("./src/img/logolock.png")}
+        source={require("./src/img/picisenhaslogo.jpg")}
         style={styles.logo}
       />
-      <Text style={styles.title}>LockGen</Text>
+      <Text style={styles.title}>PiciSenhas</Text>
       <TouchableOpacity style={styles.button} onPress={gerarSenha}>
         <Text style={styles.textButton}>Gerar Senha</Text>
       </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Sobre')}>
+                <Text style={styles.textButton}>Sobre Nós</Text> 
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('SavedPasswords', { savedPasswords })}>
+                <Text style={styles.textButton}>Ver Senhas Salvas</Text> 
+            </TouchableOpacity>
       <Modal visible={modalVisible} animationType='fade' transparent={true}>
         <ModalPassword senha={senhaGerada} fecharModal={() => setModalVisible(false)} salvarSenha={salvarSenha}/>
       </Modal>
@@ -63,7 +70,8 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Home" component={HomeScreen}/>
-        <Stack.Screen name="Details" component={DetailsScreen}/>
+        <Stack.Screen name="SavedPasswords" component={SavedPasswords}/>
+        <Stack.Screen name="Sobre" component={Sobre}/> 
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -86,7 +94,7 @@ const styles = StyleSheet.create({
  
   },
   button: {
-    backgroundColor: "#333",
+    backgroundColor: "#D98292",
     width: '70%',
     height: 50,
     borderRadius: 8,
@@ -95,7 +103,7 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   textButton: {
-    color: "#FFF",
+    color: "#191726",
     fontWeight: "bold",
     fontSize: 18,
  

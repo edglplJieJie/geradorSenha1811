@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, FlatLIst, StyleSheet} from 'react-native';
+import { View, Text, FlatList, StyleSheet} from 'react-native';
 
 export default function SavedPasswords({ route }) {
     const { savedPasswords } = route.params;
@@ -7,7 +7,7 @@ export default function SavedPasswords({ route }) {
     return(
         <View>
             <Text style={styles.tittle}>Senhas Salvas</Text>
-            <FlatLIst
+            <FlatList
             data={savedPasswords}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => (
